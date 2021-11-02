@@ -8,6 +8,7 @@
     "dev-ts": "ts-node-dev --no-notify --respawn --transpile-only server",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
+    "migrate": "prisma migrate dev --name migration",
     "generate:nexus": "ts-node --transpile-only lib/schema",
     "heroku-postbuild": "npx prisma migrate deploy",
     "start": "vite serve -m production --host",

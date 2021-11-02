@@ -7,7 +7,5 @@ export const JWT = asNexusMethod(JWTResolver, 'jwt')
 export const EmailAddress = asNexusMethod(EmailAddressResolver, 'email')
 export const NonEmptyString = asNexusMethod(NonEmptyStringResolver, 'nonEmptyString')
 
-export * from './common'
-export * from './shop'
-export * from './delivery-method'
+export * from './ejemplo'
 export * from './user'

@@ -20,23 +20,7 @@ export const registerUser = async (args: registerUserArgs, ctx: Context) => {
             hash: await hash(args.data.password, 10)
           }
         },
-        role: 'USER',
-        shop: {
-          create: {
-            slug: args.data.shopSlug,
-            instagram: args.data.instagram,
-            name: args.data.shopName,
-            phoneNumber: args.data.phoneNumber,
-          }
-        },
       },
-      include: {
-        shop: {
-          include: {
-            logo: true
-          },
-        },
-      }
     })
     return {
       token: sign(user, import.meta.env.VITE_JWT_SECRET),
@@ -46,7 +30,7 @@ export const registerUser = async (args: registerUserArgs, ctx: Context) => {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // The .code property can be accessed in a type-safe manner
       if (error.code === 'P2002') {
-        throw new Error('Email or instagram are taken')
+        throw new Error('Email are taken')
       }
     } else {
       throw new Error(error.message)
@@ -64,11 +48,7 @@ export const loginUser = async (args: loginUserArgs, ctx: Context) => {
       },
     },
     include: {
-      user: {
-        include: {
-          shop: true
-        },
-      },
+      user: true
     }
   })
   if (account && await compare(args.data.password, account.hash)) {
@@ -88,35 +68,9 @@ export const updateUser = async (args: updateUserArgs, ctx: Context) => {
       where: {
         email: payload.email,
       },
-      include: {
-        shop: {
-          include: {
-            logo: true
-          }
-        }
-      },
       data: {
         name: args.data.name || undefined,
         email: args.data.email || undefined,
-        shop: args.data.shop ? {
-          update: {
-            instagram: args.data.shop.instagram || undefined,
-            facebook: args.data.shop.facebook || undefined,
-            tiktok: args.data.shop.tiktok || undefined,
-            phoneNumber: args.data.shop.phoneNumber || undefined,
-            name: args.data.shop.name || undefined,
-            slug: args.data.shop.slug || undefined,
-            paymentMethods: args.data.shop.paymentMethods ? [...new Set(args.data.shop.paymentMethods)] : undefined,
-            hasWhatsapp: args.data.shop.hasWhatsapp ?? undefined,
-            logo: args.data.shop.logo ? {
-              update: {
-                original: args.data.shop.logo.original || '',
-                normal: args.data.shop.logo.original || undefined,
-                thumbnail: args.data.shop.logo.original || undefined,
-              },
-            } : undefined,
-          }
-        } : undefined,
         account: args.data.password ? {
           update: {
             hash: await hash(args.data.password, 10)

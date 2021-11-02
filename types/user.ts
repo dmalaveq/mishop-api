@@ -1,7 +1,6 @@
 import { arg, inputObjectType, mutationField, nonNull, objectType, queryField } from 'nexus'
 import { getUserFromJWT } from '../lib/utils'
 import { loginUser, registerUser, updateUser } from '../resolvers/user'
-import { ShopAccount, ShopUpdateInput } from './shop'
 
 export const User = objectType({
   name: 'User',
@@ -9,7 +8,6 @@ export const User = objectType({
     t.nonNull.int('id')
     t.nonNull.email('email')
     t.nonNull.nonEmptyString('name')
-    t.nonNull.field('shop', { type: ShopAccount })
     t.date('createdAt')
   },
 })
@@ -26,12 +24,8 @@ export const UserRegisterInput = inputObjectType({
   name: 'UserRegisterInput',
   definition(t) {
     t.nonNull.email('email')
-    t.nonNull.nonEmptyString('instagram')
-    t.nonNull.phoneNumber('phoneNumber')
     t.nonNull.nonEmptyString('password')
     t.nonNull.nonEmptyString('name')
-    t.nonNull.nonEmptyString('shopName')
-    t.nonNull.nonEmptyString('shopSlug')
   },
 })
 
@@ -49,7 +43,6 @@ export const UserUpdateInput = inputObjectType({
     t.email('email')
     t.nonEmptyString('name')
     t.nonEmptyString('password')
-    t.field('shop', { type: ShopUpdateInput })
   },
 })
 

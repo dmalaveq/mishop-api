@@ -25,13 +25,6 @@ export const getUserFromJWT = async (ctx: Context) => {
       const user = await ctx.prisma.user.findUnique({
         where: {
           id: result.id,
-        },
-        include: {
-          shop: {
-            include: {
-              logo: true
-            },
-          },
         }
       })
       return user
